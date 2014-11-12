@@ -8,7 +8,7 @@
     <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.3.0"></script>
     <style type="text/css">
     .map {
-        height: 400px;
+        height: 700px;
     }
     </style>
 </head>
@@ -20,14 +20,20 @@
     var map = L.map('map').setView([44.05, -121.30], 11);
     var layer = new L.StamenTileLayer("toner-lite");
     map.addLayer(layer);
+    /* var imagery = L.tileLayer.wms("http://navigator.state.or.us/ArcGIS/services/Framework/Imagery_Mosaic2011/ImageServer/WMSServer", {
+      layers: 'Imagery_Mosaic2011',
+      format: 'image/jpeg',
+      attribution: "Imagery &copy; 2014 Oregon"
+    });
+    map.addLayer(imagery); */ // We can also add WMS layers as tile layers very easily. This is 2011 satellite imagery hosted by Oregon's GIS office.
     L.geoJson(parks, {
       style: {
         "fillColor": "green",
         "weight": 0,
-        "fillOpacity": 0.6
+        "fillOpacity": 0.5
       },
       onEachFeature: function (feature, layer) {
-        layer.bindPopup(feature.properties.Park_Name);
+        layer.bindPopup('<strong>' + feature.properties.Park_Name + '</strong><br>Playground? ' + feature.properties.Playground); // You can use '+' to concatenate properties from the GeoJSON data with basic html elements to create unique popups
       }
     }).addTo(map);
     L.geoJson(faults, {
@@ -37,7 +43,7 @@
         "opacity": .8
       },
       onEachFeature: function (feature, layer) {
-        layer.bindPopup(feature.properties.NAME);
+        layer.bindPopup('<strong>' + feature.properties.NAME + '</strong><br>Age: ' + feature.properties.AGE + ' years'); // Another popup example
       }
     }).addTo(map);
   </script>
